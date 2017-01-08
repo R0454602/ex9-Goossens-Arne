@@ -103,6 +103,27 @@ app.get('/les/:id', function (request, response) {
     });
 });
 
+// opvangen van een POST op /locaties.
+app.post("/les", function(request, response) {
+    // de data in de body wordt toegekend aan onze locatie variabele.
+    // deze is enkel opgevuld indien het JSON is.
+    var les = request.body;
+    // Valideren dat velden bestaan
+    var errors = validationles.fieldsNotEmpty(les, "lesid", "vak", "docent", "duur", "begintijd", "lokaal");
+    if (errors) {
+        response.status(400).send({
+            msg: "Volgende velden zijn verplicht of fout: " + errors.concat()
+        });
+        return;
+    }
+    dalLes.saveLes(les, function(err, les) {
+        if(err){
+            throw err;
+        }
+        response.send(les);
+    });
+});
+
 // de server starten op poort 4567
 app.listen(4567);
 

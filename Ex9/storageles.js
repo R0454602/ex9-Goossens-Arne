@@ -14,14 +14,14 @@ var lesSchema = mongoose.Schema({
                 required: true
             },
             duur: {
-                type: String,
+                type: Number,
                 required: true
             },
             begintijd: {
-                type: String
+                type: Datetime
             },
             lokaal: {
-                type: String,
+                type: Object,
                 required: true
             }
 });
