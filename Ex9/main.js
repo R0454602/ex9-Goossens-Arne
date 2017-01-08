@@ -13,6 +13,9 @@ var validationlocatie = require('./validatelocatie.js');
 var dalLes = require('./storageles.js');
 var validationles = require('./validatieles.js');
 
+var dalAanwezig = require('./storageaanwezigheden.js');
+var validationaanwezigheden = require('./validateaanwezigheden');
+
 // aanmaken van de webserver variabele
 var app = express();
 // automatische json-body parsers van request MET media-type application/json gespecifieerd in de request.
@@ -103,7 +106,7 @@ app.get('/les/:id', function (request, response) {
     });
 });
 
-// opvangen van een POST op /locaties.
+// opvangen van een POST op /les.
 app.post("/les", function(request, response) {
     // de data in de body wordt toegekend aan onze locatie variabele.
     // deze is enkel opgevuld indien het JSON is.
@@ -121,6 +124,48 @@ app.post("/les", function(request, response) {
             throw err;
         }
         response.send(les);
+    });
+});
+
+// opvangen van een GET op /aanwezigheden
+app.get('/aanwezigheden', function (request, response) {
+    dalAanwezig.AllAanwezigheden(function (err, aanwezig) {
+        if(err){
+            throw err;
+        }
+        response.send(aanwezig);
+    });
+});
+
+// opvangen van een GET op /aanwezigheden/:ID
+app.get('/aanwezigheden/:aanwezigid', function (request, response) {
+    dalAanwezig.findAanwezigheden(request.params.aanwezigid, function (err, aanwezig) {
+        if (aanwezig) {
+        response.send(aanwezig);
+    } else {
+        err;
+    }
+    });
+});
+
+// opvangen van een POST op /aanwezigheden.
+app.post("/aanwezigheden", function(request, response) {
+    // de data in de body wordt toegekend aan onze locatie variabele.
+    // deze is enkel opgevuld indien het JSON is.
+    var personen = request.body;
+    // Valideren dat velden bestaan
+    var errors = validationaanwezigheden.fieldsNotEmpty(personen, "aanwezigid", "naam_drone", "aantal", "naam_locatie", "uur");
+    if (errors) {
+        response.status(400).send({
+            msg: "Volgende velden zijn verplicht of fout: " + errors.concat()
+        });
+        return;
+    }
+    dalAanwezig.saveAanwezigheden(personen, function(err, personen) {
+        if(err){
+            throw err;
+        }
+        response.send(personen);
     });
 });
 
