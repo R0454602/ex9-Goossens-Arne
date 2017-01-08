@@ -30,10 +30,11 @@ app.get('/locaties', function (request, response) {
 app.get("/locaties/:id", function (request, response) {
 
     dalLocatie.findLocaties(request.params.id, function (err, locatie) {
-        if(err){
-            throw err;
-        }
-        response.send(locatie);
+            if (locatie) {
+          response.send(locatie);
+            } else {
+                err;
+            }
     });
 });
 
@@ -53,7 +54,7 @@ app.post("/locaties", function(request, response) {
    
     dalLocatie.saveLocaties(locatie, function(err, locatie) {
         if(err){
-            throw err
+            throw err;
         }
         response.send(locatie);
     });
