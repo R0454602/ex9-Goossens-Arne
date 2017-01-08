@@ -50,18 +50,7 @@ app.post("/locaties", function(request, response) {
         });
         return;
     }
-    /*
-    // Valideren dat we niet dezelfde locatie 2x hebben
-    var existingLocatie = dal.findLocatie(locatie.naam_drone);
-    if (existingLocatie) {
-        response.status(409).send({
-            msg: "Naam_drone moet uniek zijn!",
-            link: "../locaties/" + existingLocatie.id
-        });
-        return;
-    }
-    Dit hoeft niet meer omdat we met moongoose zeggen dat ze uniek of niet uniek moeten zijn
-    */
+   
     dalLocatie.saveLocaties(locatie, function(err, locatie) {
         if(err){
             throw err
