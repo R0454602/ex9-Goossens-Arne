@@ -7,8 +7,11 @@ mongoose.connect('mongodb://localhost:27017/MijnAPI');
 
 // onze lokale 'datastore'. deze variable bewaart onze state.
 //var dal = require("./storage.js");
-var dalLocatie = require("./locatie.js");
+var dalLocatie = require("./storagelocatie.js");
 var validationlocatie = require('./validatelocatie.js');
+
+var dalLes = require('./storageles.js');
+var validationles = require('./validatieles.js');
 
 // aanmaken van de webserver variabele
 var app = express();
@@ -76,6 +79,27 @@ app.put("/locaties/:id", function (request, response) {
             throw err;
         }
         response.send(locatie);
+    });
+});
+
+// opvangen van een GET op /les
+app.get('/les', function (request, response) {
+    dalLes.AllLes(function (err, les) {
+        if(err){
+            throw err;
+        }
+         response.send(les);
+    });
+});
+
+// opvangen van een GET op /bewegingen/:lesid
+app.get('/les/:id', function (request, response) {
+    dalLes.findLes(request.params.id, function (err, les) {
+        if (les) {
+        response.send(les);
+    } else {
+        err;
+    }
     });
 });
 
