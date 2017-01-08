@@ -34,5 +34,8 @@ module.exports = {
 
     findLocaties : function(id, callback){
         Locatie.find({naam_drone:id}, callback);
+      },
+       updateLocaties: function (id, locatie, callback) {
+         Locatie.findOneAndUpdate({naam_drone:id}, locatie , callback);
     }
 };
