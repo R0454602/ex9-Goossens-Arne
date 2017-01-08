@@ -18,7 +18,7 @@ var lesSchema = mongoose.Schema({
                 required: true
             },
             begintijd: {
-                type: Datetime
+                type: Date
             },
             lokaal: {
                 type: Object,

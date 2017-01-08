@@ -18,7 +18,7 @@ var aanwezigSchema = mongoose.Schema({
                 required: true
             },
             tijdstip: {
-                type: Datetime,
+                type: Date,
                 timestamp: true
             }
 });
